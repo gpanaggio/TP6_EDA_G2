@@ -54,6 +54,75 @@ Allegro_c::Allegro_c()
 	tick = 0;
 }
 
+Allegro_c::Allegro_c(mode modo)
+{
+	if (al_init())	//inicializo allegro
+	{
+		if (al_install_audio())	//inicializo los audios
+		{
+			if (al_init_acodec_addon())
+			{
+				if ((al_reserve_samples(1)))	//para la musica
+				{
+					if (al_init_image_addon())	//addon para las imagenes
+					{
+						if (al_install_keyboard())	//inicializo para que lea teclado
+						{
+							if ((queue = al_create_event_queue()))	//creo la cola de eventos
+							{
+								switch (modo)
+								{
+								case HOMER:
+									if ((timer = al_create_timer(1 / FPS_HOMER))) {}
+									break;
+								case MARIO:
+									if ((timer = al_create_timer(1 / FPS_MARIO))) {}
+									break;
+								case SONIC:
+									if ((timer = al_create_timer(1 / FPS_SONIC))) {}
+									break;
+								case CAT:
+									if ((timer = al_create_timer(1 / FPS_CAT))) {}
+									break;
+								case BOOM1:
+									if ((timer = al_create_timer(1 / FPS_BOOM1))) {}
+									break;
+								case BOOM2:
+									if ((timer = al_create_timer(1 / FPS_BOOM2))) {}
+									break;
+								}
+								if ((display = al_create_display(SCREEN_W, SCREEN_H)))	//creo el display
+								{
+
+									al_register_event_source(this->queue, al_get_keyboard_event_source());	//hago que la cola de eventos registre el teclado
+									al_register_event_source(this->queue, al_get_display_event_source(this->display));	//que registre cosas del display
+									al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
+								}
+
+							}
+						}
+					}
+					else
+						fprintf(stderr, "ERROR: Failed to load Image addon\n");
+				}
+				else
+					fprintf(stderr, "ERROR: Failed to reserve sample\n");
+			}
+			else
+				fprintf(stderr, "ERROR: Failed to install acodec addon\n");
+		}
+		else
+			fprintf(stderr, "ERROR: Failed to install audio\n");
+	}
+	else
+		fprintf(stderr, "ERROR: Failed to initialize allegro system\n");
+
+	coordX = 0;
+	coordY = SCREEN_H / 3.0;
+	tick = 0;
+	this->modo = modo;
+}
+
 
 Allegro_c::~Allegro_c()
 {
@@ -141,11 +210,6 @@ ALLEGRO_EVENT_QUEUE * Allegro_c::get_queue()
 	return queue;
 }
 
-float Allegro_c::getX()
-{
-	return coordX;
-}
-
 void Allegro_c::start_timer()
 {
 	al_start_timer(timer);
@@ -227,4 +291,24 @@ void Allegro_c::destroy_all()
 void Allegro_c::setmode(mode modo)
 {
 	this->modo = modo;
+}
+
+void Allegro_c::run()
+{
+	bool next = false;		//con esto indico si termine mi secuencia y le aviso al siguiente	
+	start_timer();
+
+	while (!next)
+	{
+		if (al_get_next_event(queue, &ev))	//tengo el evento registrado en ev
+		{
+			if (ev.type == ALLEGRO_EVENT_TIMER)		//si tengo un evento de timer...
+			{
+				next = update_display();	//cuando termine lo inico con el next
+				al_flip_display();
+			}
+			else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE || ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+				next = true;
+		}
+	}
 }

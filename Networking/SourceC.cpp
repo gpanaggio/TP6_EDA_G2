@@ -10,27 +10,10 @@ int main(int argc, char* argv[])
 	conquering.receiveMessage();
 
 
-	Allegro_c allegro;
-	allegro.setmode(conquering.getmode());
+	Allegro_c allegro(conquering.getmode());
 	allegro.loadBitmap();
-	allegro.start_timer();
-	ALLEGRO_EVENT ev;
 
-	bool next = false;		//con esto indico si termine mi secuencia y le aviso al siguiente	
-
-	if(!conquering.errorOccurred())
-	while (!next)
-	{
-		if (al_get_next_event(allegro.get_queue(), &ev))	//tengo el evento registrado en ev
-		{
-			if (ev.type == ALLEGRO_EVENT_TIMER)		//si tengo un evento de timer...
-			{
-				next = allegro.update_display();	//cuando termine lo inico con el next
-				al_flip_display();
-			}
-			else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE || ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
-				next = true;
-		}
-	}
+	if (!conquering.errorOccurred())
+		allegro.run();
 	allegro.destroy_all();
 }
