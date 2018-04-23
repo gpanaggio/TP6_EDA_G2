@@ -5,7 +5,7 @@
 #include <boost/chrono.hpp>
 #include <boost/timer/timer.hpp>
 
-#define HELLO_PORT_STR "50013"
+#define HELLO_PORT_STR "12345"
 #define SERVER_IP "localhost"
 
 
@@ -16,7 +16,10 @@ public:
 	client_c();
 	void startConnection(const char* host);
 	void receiveMessage();
+	void sendMessage();
+	void setbuffer(char * buff);
 	~client_c();
+	void setmode(mode);
 	mode getmode();
 	bool errorOccurred();
 

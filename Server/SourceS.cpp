@@ -9,9 +9,23 @@ int main(int argc, char* argv[])
 	std::cout << "iniciando conexion" << std::endl;
 	conquering.startConnection();					//comienzo la conexion
 	std::cout << "presione enter para comenzar" << std::endl;
-	getchar();
+	//getchar();
 
-	Allegro_C allegro(MARIO);								//una vez que se conecto empiezo con lo de allegro
+
+
+	conquering.receiveMessage();
+	Allegro_C allegro(conquering.getmode());
+	allegro.loadBitmap();
+
+	if (!conquering.errorOccurred())
+		allegro.run();
+	allegro.destroy_all();
+
+
+
+
+	/*
+	Allegro_C allegro(HOMER);								//una vez que se conecto empiezo con lo de allegro
 	allegro.loadBitmap();
 	allegro.run();
 	allegro.destroy_all();
@@ -21,5 +35,6 @@ int main(int argc, char* argv[])
 	conquering.sendMessage();			//cuando termine envio el mensaje
 	Sleep(50); // Le damos 50ms para que llegue el mensaje antes de cerrar el socket.
 
+	*/
 	return 0;
-}}
+}

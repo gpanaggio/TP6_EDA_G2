@@ -37,6 +37,7 @@ public:
 	bool draw_next();
 	void destroy_all();
 	void setmode(mode);
+	mode getmode();
 	void run();
 	ALLEGRO_EVENT_QUEUE	* get_queue();
 

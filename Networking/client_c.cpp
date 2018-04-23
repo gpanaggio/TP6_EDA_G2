@@ -69,6 +69,55 @@ bool client_c:: errorOccurred()
 	return this->error;
 }
 
+void client_c::sendMessage()
+{
+	char buf[512];
+setbuffer(buf);				//seteo en buf el modo en el que estamos
+
+size_t len;
+boost::system::error_code error;
+
+do
+{
+	len = socket_forClient->write_some(boost::asio::buffer(buf, strlen(buf)), error);
+} while ((error.value() == WSAEWOULDBLOCK));
+if (error)
+std::cout << "Error while trying to connect to server " << error.message() << std::endl;
+}
+
+
+void client_c::setbuffer(char * buff)
+{
+	switch (modo)
+	{
+	case HOMER:
+		strcpy_s(buff, 512, "HOMER");
+		break;
+	case MARIO:
+		strcpy_s(buff, 512, "MARIO");
+		break;
+	case SONIC:
+		strcpy_s(buff, 512, "SONIC");
+		break;
+	case CAT:
+		strcpy_s(buff, 512, "CAT");
+		break;
+	case BOOM1:
+		strcpy_s(buff, 512, "BOOM1");
+		break;
+	case BOOM2:
+		strcpy_s(buff, 512, "BOOM2");
+		break;
+	default:
+		break;
+	}
+}
+
+
+void client_c::setmode(mode modo)
+{
+	this->modo = modo;
+}
 
 
 /*void client_c::receiveMessage() {

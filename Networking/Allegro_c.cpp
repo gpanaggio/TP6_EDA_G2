@@ -312,3 +312,7 @@ void Allegro_c::run()
 		}
 	}
 }
+mode Allegro_c::getmode()
+{
+	return this->modo;
+}

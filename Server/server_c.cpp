@@ -45,6 +45,53 @@ void server_c::sendMessage() {
 		std::cout << "Error while trying to connect to server " << error.message() << std::endl;
 }
 
+bool server_c::errorOccurred()
+{
+	return this->error;
+}
+
+mode server_c::getmode()
+{
+	return modo;
+}
+
+void server_c::receiveMessage() {
+	boost::system::error_code error;
+	char buf[512];
+	size_t len = 0;
+	std::cout << "Receiving Message" << std::endl;
+	do
+	{
+		len = socket_forServer->read_some(boost::asio::buffer(buf), error);		//la linea clave, guardo lo que leo en el buffer, y uso el len para saber cuanto lei
+		if (!error)
+			buf[len] = '\0';
+
+	} while (error.value() == WSAEWOULDBLOCK);
+
+	if (!error)
+	{
+		std::cout << std::endl << "Server sais: " << buf << std::endl;
+		if (!strcmp(buf, "HOMERO") || !strcmp(buf, "HOMER"))										//se que no esta bueno usar un monton de if´s pero no se me ocurre otra
+			modo = HOMER;
+		else if (!strcmp(buf, "MARIO"))
+			modo = MARIO;
+		else if (!strcmp(buf, "SONIC"))
+			modo = SONIC;
+		else if (!strcmp(buf, "CAT"))
+			modo = CAT;
+		else if (!strcmp(buf, "BOOM1"))
+			modo = BOOM1;
+		else if (!strcmp(buf, "BOOM2"))
+			modo = BOOM2;
+	}
+	else
+	{
+		std::cout << "Error while trying to connect to server " << error.message() << std::endl;
+		this->error = true;
+	}
+}
+
+
 /*
 void server_c::sendMessage() {
 char buf[512] = "your turn.";		//le digo al siguente que es su turno
