@@ -30,7 +30,6 @@ int main(int argc, char *argv[])
 		while (getchar() != '\n');
 		return 0;
 	}
-//	ParseCmdLine();		//el parse tiene que setear el MustAskUser en TRUE
 
 	simulation_C sim;
 
@@ -60,6 +59,6 @@ int main(int argc, char *argv[])
 		server_C * S = new server_C;
 		S->startConnection();
 		sim.newMsg(S->receiveMessage());
-	} while (true);
+	} while (!exit);
 	return 0;
 }
