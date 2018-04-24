@@ -297,6 +297,46 @@ void simulation_C::requestSeq()
 
 void simulation_C::requestOrder()
 {
+	using namespace std;
+	cout << "Indique la secuencia con la que desea enviar el mensaje." << endl;
+	cout << "Para esto escriba cada uno escriba el numero de maquina seguido de un espacio en el orden que quiera." << endl;
+	cout << "Solo se aceptaran numeros del 1 al 255" << endl;
+
+	std::string newInput = "";
+	std::string input = "";
+	std::getline(cin, input);
+	std::stringstream ss(input);
+	int numeros[255];
+	int num = 0;
+	int cont = 0;
+	bool restart = false;
+	while (std::getline(ss, input, ' '))
+	{
+
+		if (input == "\n")
+		{
+			break;
+		}
+		else
+		{
+			if (input.length() > 0)
+			{
+
+				num = atoi(input.c_str());
+				if ((num >= 1) && (num <= 255))
+				{
+					numeros[cont] = num;
+					cont++;
+				}
+			}
+		}
+
+	}
+
+	for (int i = 0; i < cont; i++)
+	{
+		YOU_GO[i + 2] = numeros[i];
+	}
 	//NO OLVIDAR QUE LUEGO DE LA SECUENCIA HAY QUE PONER EL TERMINADOR
 }
 
