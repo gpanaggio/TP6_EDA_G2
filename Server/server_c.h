@@ -7,6 +7,8 @@
 #include <boost/bind.hpp>
 
 #define HELLO_PORT 12345
+#define MAX_IPS 255
+
 
 class server_c {
 public:
@@ -27,4 +29,5 @@ private:
 	boost::asio::ip::tcp::acceptor* server_acceptor;
 	mode modo;
 	bool error;
+	char YOU_GO[MAX_IPS + 2];
 };

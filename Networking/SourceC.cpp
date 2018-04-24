@@ -8,9 +8,34 @@ int main(int argc, char* argv[])
 	client_c conquering;
 	conquering.startConnection(SERVER_IP);
 	std::cout << "presione enter para mandar homero" << std::endl;
-	getchar();
+	int c =getchar();
+	mode test;
+	switch (c)
+	{
+	case '0':
+		test=HOMER;
+		break;
+	case '1':
+		test = MARIO;
+		break;
+	case '2':
+		test = SONIC;
+		break;
+	case '3':
+		test = CAT;
+		break;
+	case '4':
+		test = BOOM1;
+		break;
+	case '5':
+		test = BOOM2;
+		break;
+	default:
+		test = HOMER;
+		break;
+	}
 	
-	Allegro_c allegro(HOMER);								//una vez que se conecto empiezo con lo de allegro
+	Allegro_c allegro(test);								//una vez que se conecto empiezo con lo de allegro
 	allegro.loadBitmap();
 	allegro.run();
 	allegro.destroy_all();

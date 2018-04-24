@@ -1,6 +1,8 @@
 #include "client_c.h"
 
 
+
+
 client_c::client_c() {
 	IO_handler = new boost::asio::io_service();
 	socket_forClient = new boost::asio::ip::tcp::socket(*IO_handler);
@@ -8,11 +10,13 @@ client_c::client_c() {
 	this->error = false;
 }
 
+
 client_c::~client_c() {
 	socket_forClient->close();
 	delete client_resolver;
 	delete socket_forClient;
 	delete IO_handler;
+
 }
 
 void client_c::startConnection(const char* host) {
@@ -72,20 +76,21 @@ bool client_c:: errorOccurred()
 void client_c::sendMessage()
 {
 	char buf[512];
-setbuffer(buf);				//seteo en buf el modo en el que estamos
+	setbuffer(buf);				//seteo en buf el modo en el que estamos
+	//strcpy_s(buff, 512, YOU_GO); //para copiar lo que se va a mandar al buffer
+	size_t len;
+	boost::system::error_code error;
 
-size_t len;
-boost::system::error_code error;
-
-do
-{
-	len = socket_forClient->write_some(boost::asio::buffer(buf, strlen(buf)), error);
-} while ((error.value() == WSAEWOULDBLOCK));
-if (error)
-std::cout << "Error while trying to connect to server " << error.message() << std::endl;
+	do
+	{
+		len = socket_forClient->write_some(boost::asio::buffer(buf, strlen(buf)), error);
+	}	
+	while ((error.value() == WSAEWOULDBLOCK));
+	if (error)
+	std::cout << "Error while trying to connect to server " << error.message() << std::endl;
 }
 
-
+//borrar despues
 void client_c::setbuffer(char * buff)
 {
 	switch (modo)

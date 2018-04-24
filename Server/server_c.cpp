@@ -4,6 +4,7 @@
 
 server_c::server_c()
 {
+	
 	IO_handler = new boost::asio::io_service();
 	socket_forServer = new boost::asio::ip::tcp::socket(*IO_handler);
 	server_acceptor = new boost::asio::ip::tcp::acceptor(*IO_handler,
@@ -19,6 +20,7 @@ server_c::~server_c()
 	delete server_acceptor;
 	delete socket_forServer;
 	delete IO_handler;
+	
 }
 
 void server_c::writeCompletitionCallback(const boost::system::error_code& error, std::size_t transfered_bytes) {
@@ -33,7 +35,7 @@ void server_c::startConnection() {
 void server_c::sendMessage() {
 	char buf[512];
 	setbuffer(buf);				//seteo en buf el modo en el que estamos
-
+	//strcpy_s(buff, 512, YOU_GO); //para copiar lo que se va a mandar al buffer
 	size_t len;
 	boost::system::error_code error;
 

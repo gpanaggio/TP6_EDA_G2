@@ -7,7 +7,7 @@
 
 #define HELLO_PORT_STR "12345"
 #define SERVER_IP "localhost"
-
+#define MAX_IPS 255
 
 using namespace std;
 
@@ -19,6 +19,8 @@ public:
 	void sendMessage();
 	void setbuffer(char * buff);
 	~client_c();
+	//void connect(string )
+	
 	void setmode(mode);
 	mode getmode();
 	bool errorOccurred();
@@ -30,4 +32,5 @@ private:
 	boost::asio::ip::tcp::resolver::iterator endpoint;		//como el numero de telefono
 	mode modo;
 	bool error;
+	char YOU_GO[MAX_IPS+2];
 };
