@@ -1,4 +1,3 @@
-#pragma once
 #include "simulation_C.h"
 #include <stdio.h>
 
