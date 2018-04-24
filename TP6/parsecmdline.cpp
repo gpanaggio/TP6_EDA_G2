@@ -8,18 +8,18 @@ int parseCmdLine(int argc, char * argv[], pCallback p, void * userData, simulati
 	char * keyword = NULL;
 	for (int i = 1; (retValue == NOERROR) && (i < argc); i = i + 2)
 	{
-		if (argv[i][0] == '-')
+		if (argv[i][0] == '-')								//verifica si es error2
 			if (argv[i][1] != 0)
 				keyword = (char *)argv[i] + 1;
 			else
 				retValue = ERROR2;
 
-		if (keyword && ((i + 1) == argc))
+		if (keyword && ((i + 1) == argc))					//verifica error1
 			retValue = ERROR1;
 
-		if (retValue == NOERROR)
+		if (retValue == NOERROR)							//Uso el callback si no se produjo ningun error
 		{
-			retValue = (*p)(keyword, (char *)(i + 1 == argc ? argv[i] : argv[i + 1]), userData, simulation_C *sim);
+			retValue = (*p)(keyword, (char *)(i + 1 == argc ? argv[i] : argv[i + 1]), userData, sim);
 			keyword = NULL;
 		}
 	}
