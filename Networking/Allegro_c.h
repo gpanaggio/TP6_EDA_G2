@@ -40,8 +40,7 @@ public:
 	mode getmode();
 	void run();
 	ALLEGRO_EVENT_QUEUE	* get_queue();
-	mode getmode();
-
+	
 private:
 	ALLEGRO_SAMPLE * music = NULL;
 	ALLEGRO_TIMER * timer = NULL;

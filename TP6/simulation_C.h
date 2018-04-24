@@ -2,6 +2,7 @@
 #include "mod.h"
 #include <string>
 #include <fstream>
+#include <sstream>
 #include <allegro5/allegro5.h> 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_color.h> 
@@ -47,7 +48,7 @@ public:
 	void SetAskUser();
 	bool MustAskUser();
 	void requestSeq();
-	void requestOrder();	//REQUESTORDER TAMBIEN TIENE QUE GUARDAR
+	void requestOrder();	//LOS GUARDO EN EL YOU_GO
 	bool myTurn();
 	bool MustsendMsg();
 	string getnext();	//devuelve un string con la direccion ip de que sigue
@@ -55,6 +56,7 @@ public:
 	char * getmsg();
 	void setIP(string);
 	void newMsg(char *);
+	
 
 private:
 	ALLEGRO_SAMPLE * music = NULL;
