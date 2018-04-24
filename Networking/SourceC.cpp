@@ -6,7 +6,7 @@
 int main(int argc, char* argv[])
 {
 	client_c conquering;
-	conquering.startConnection(SERVER_IP);
+	conquering.startConnection(SERVER_IP, HELLO_PORT_STR);
 	std::cout << "presione enter para mandar homero" << std::endl;
 	int c =getchar();
 	mode test;

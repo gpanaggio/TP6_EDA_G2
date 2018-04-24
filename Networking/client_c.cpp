@@ -19,10 +19,10 @@ client_c::~client_c() {
 
 }
 
-void client_c::startConnection(const char* host) {
+void client_c::startConnection(string host, string port) {
 	endpoint = client_resolver->resolve(
-		boost::asio::ip::tcp::resolver::query(host, HELLO_PORT_STR));
-	cout << "Trying to connect to " << host << " on port " << HELLO_PORT_STR << std::endl;
+		boost::asio::ip::tcp::resolver::query(host, port));
+	cout << "Trying to connect to " << host << " on port " << port << std::endl;
 	boost::asio::connect(*socket_forClient, endpoint);
 	socket_forClient->non_blocking(true);
 }
@@ -117,6 +117,8 @@ void client_c::setbuffer(char * buff)
 		break;
 	}
 }
+
+
 
 
 void client_c::setmode(mode modo)

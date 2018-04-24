@@ -21,10 +21,10 @@ int main(int argc, char* argv[])
 		allegro.run();
 	allegro.destroy_all();
 
-
-
-
 	/*
+
+
+
 	Allegro_C allegro(HOMER);								//una vez que se conecto empiezo con lo de allegro
 	allegro.loadBitmap();
 	allegro.run();

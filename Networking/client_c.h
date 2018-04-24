@@ -14,12 +14,12 @@ using namespace std;
 class client_c {
 public:
 	client_c();
-	void startConnection(const char* host);
+	void startConnection(string host, string port);
 	void receiveMessage();
 	void sendMessage();
 	void setbuffer(char * buff);
 	~client_c();
-	//void connect(string )
+	//void connect(string next_ip, string  )
 	
 	void setmode(mode);
 	mode getmode();
