@@ -26,7 +26,7 @@
 #define SCREEN_W (1080)
 #define SCREEN_H (480)
 
-#define MY_IP "mi ip"
+#define MAX_IPs (255)
 
 class simulation_C
 {
@@ -45,13 +45,14 @@ public:
 	void SetAskUser();
 	bool MustAskUser();
 	void requestSeq();
-	void requestOrder();
+	void requestOrder();	//REQUESTORDER TAMBIEN TIENE QUE GUARDAR
 	bool myTurn();
 	bool MustsendMsg();
 	string getnext();	//devuelve un string con la direccion ip de que sigue
 	string getport();
 	char * getmsg();
 	void setIP(string);
+	void newMsg(char *);
 
 private:
 	ALLEGRO_SAMPLE * music = NULL;
@@ -70,7 +71,7 @@ private:
 	int tick;
 	mode modo;
 	bool MustAskUse;		//usamos esta variable para saber si esta es la maquina que tiene que hablar con el user
-	char * msg;
+	char YOU_GO[MAX_IPs + 2];			//tendremos que hacerle una malloc para guardar memoria, o un YOU_GO = new char[257] ?
 	string port;			//el puerto al que escuchamos
 	string my_ip;
 };

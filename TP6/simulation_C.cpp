@@ -21,15 +21,11 @@ simulation_C::simulation_C()
 						{
 							if ((queue = al_create_event_queue()))	//creo la cola de eventos
 							{
-								if ((timer = al_create_timer(1 / FPS)))	//creo el timer
+								if ((display = al_create_display(SCREEN_W, SCREEN_H)))	//creo el display
 								{
-									if ((display = al_create_display(SCREEN_W, SCREEN_H)))	//creo el display
-									{
-
-										al_register_event_source(this->queue, al_get_keyboard_event_source());	//hago que la cola de eventos registre el teclado
-										al_register_event_source(this->queue, al_get_display_event_source(this->display));	//que registre cosas del display
-										al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
-									}
+									al_register_event_source(this->queue, al_get_keyboard_event_source());	//hago que la cola de eventos registre el teclado
+									al_register_event_source(this->queue, al_get_display_event_source(this->display));	//que registre cosas del display
+									al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
 								}
 							}
 						}
@@ -53,6 +49,7 @@ simulation_C::simulation_C()
 	coordY = SCREEN_H / 3.0;
 	tick = 0;
 	port = "12345";
+	MustAskUse = false;
 }
 
 
@@ -71,7 +68,7 @@ void simulation_C::loadBitmap()
 	string carpeta;
 	string name;
 	string bitstr;
-	switch (msg[0])
+	switch (YOU_GO[0])
 	{
 	case HOMER:
 		this->HomerBitmap = new ALLEGRO_BITMAP *[10];
@@ -143,7 +140,7 @@ ALLEGRO_EVENT_QUEUE * simulation_C::get_queue()
 
 void simulation_C::start_timer()
 {
-	switch (msg[0])
+	switch (YOU_GO[0])
 	{
 	case HOMER:
 		if ((timer = al_create_timer(1 / FPS_HOMER))) {}
@@ -218,7 +215,7 @@ void simulation_C::destroy_all()
 	al_destroy_event_queue(queue);
 	al_shutdown_image_addon();
 	al_uninstall_audio();
-	switch (msg[0])
+	switch (YOU_GO[0])
 	{
 	case HOMER:
 		delete[] HomerBitmap;
@@ -272,7 +269,7 @@ void simulation_C::run()
 	}
 	destroy_all();
 
-	(msg[1])++;
+	(YOU_GO[1])++;		//incremento el count
 }
 
 bool simulation_C::MustAskUser()
@@ -282,14 +279,25 @@ bool simulation_C::MustAskUser()
 
 void simulation_C::requestSeq()
 {
-	std::cout << "enter the sequence" << std::endl;
-	char c = getchar();
-	*msg = c;		//tengo en el primer casillero del paquete la animacion que quiero (A, B, etc...)
+	std::cout << "enter the animation" << std::endl;
+	char c;
+	do {
+		c = getchar();
+		do
+		{
+		} while (getchar() != '\n');	//limpio el buffer que que no considere el entre key
+		if (c<'A' || c>'F')
+			std::cout << "invalid input, enter from 'A' to 'F'" << std::endl;
+	} while (c<'A' || c>'F');
+
+	YOU_GO[0] = c;		//tengo en el primer casillero del paquete la animacion que quiero (A, B, etc...)
+
+	YOU_GO[1] = '1';	//como soy el primero seteo el count en 1
 }
 
 void simulation_C::requestOrder()
 {
-
+	//NO OLVIDAR QUE LUEGO DE LA SECUENCIA HAY QUE PONER EL TERMINADOR
 }
 
 bool simulation_C::myTurn()
@@ -302,9 +310,9 @@ bool simulation_C::myTurn()
 	while (src.good())
 	{
 		getline(src, line);
-		if (n == msg[1] - '0')
+		if (n == YOU_GO[1] - '0')		//nos ubicamos en la linea indicada segun el count
 		{
-			if (!strcmp(line.c_str(), MY_IP))
+			if (!strcmp(line.c_str(), my_ip))	//si las ip´s coinciden se que es mi turno
 				myturn = true;
 		}
 		n++;
@@ -316,16 +324,10 @@ bool simulation_C::myTurn()
 bool simulation_C::MustsendMsg()
 {
 	bool mustsendmsg = true;
-	int n = 0;
-
-	ifstream src("direcciones.txt");
-	while (src.good())
-	{
-		n++;		//tengo el numero de lineas
-	}
-
-	if ((msg[1] - '0') == n)	//me fijo si soy la ultima maquina
+	int n = ((int)YOU_GO[1]-'0');	//hago un casteo explicito del count
+	if (YOU_GO[n + 2] == '\0')		//me fijo si despues de mi no viene nadie (el string termina)
 		mustsendmsg = false;
+	return mustsendmsg;
 }
 
 string simulation_C::getnext()
@@ -337,7 +339,7 @@ string simulation_C::getnext()
 	while (src.good())
 	{
 		getline(src, line);
-		if (n == msg[1] - '0' + 1)		//agarro la ip del que sigue
+		if (n == YOU_GO[1] - '0' + 1)		//agarro la ip del que sigue
 		{
 			return line;
 		}
@@ -352,7 +354,7 @@ string simulation_C::getport()
 
 char * simulation_C::getmsg()
 {
-	return msg;
+	return YOU_GO;
 }
 
 void simulation_C::SetAskUser()
@@ -360,7 +362,12 @@ void simulation_C::SetAskUser()
 	MustAskUse = true;
 }
 
-void simulation_C::SetIP(string ip)
+void simulation_C::setIP(string ip)
 {
 	my_ip = ip;
+}
+
+void simulation_C::newMsg(char * msg)
+{
+	strcpy_s(YOU_GO, 257, msg);
 }

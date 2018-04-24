@@ -1,12 +1,13 @@
 #include <iostream>
 #include "client_C.h"
+#include "server_C.h"
 #include "simulation_C.h"
 
 using namespace std;
 
 int main(void)
 {
-	ParseCmdLine();		//el parse tiene que setear el MustAskUser en TRUE
+//	ParseCmdLine();		//el parse tiene que setear el MustAskUser en TRUE
 
 	simulation_C sim;
 
@@ -23,9 +24,14 @@ int main(void)
 		}
 		if (sim.MustsendMsg)
 		{
-			client_C * client = new client_C;		//creamos un cliente
-
+			client_C * C = new client_C;		//creamos un cliente
+			C->startConnection(sim.getnext(), sim.getport());
+			C->sendMessage(sim.getmsg());
+			delete C;
 		}
+		server_C * S = new server_C;
+		S->startConnection();
+		sim.newMsg(S->receiveMessage());
 	} while (true);
 	return 0;
 }

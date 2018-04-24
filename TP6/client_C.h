@@ -1,28 +1,30 @@
 #include <iostream>
-#include "mod.h"
 #include <cstdio>
-#include <cstring>
 #include <boost/asio.hpp>
-#include <boost/function.hpp>
-#include <boost/bind.hpp>
+#include <boost/chrono.hpp>
+#include <boost/timer/timer.hpp>
 
-#define HELLO_PORT 50013
+#define MAX_IPS 255
 
-class client_C
-{
+using namespace std;
+
+class client_C {
 public:
 	client_C();
-	void startConnection();
-	void sendMessage();
-	void writeCompletitionCallback(const boost::system::error_code& error, std::size_t transfered_bytes);
-	~client_C();
-	void setmode(mode);
+	void startConnection(string host, string port);
+	//void receiveMessage();
+	void sendMessage(char * msg);
 	void setbuffer(char * buff);
+	~client_C();
+	//void connect(string next_ip, string  )
+
+	bool errorOccurred();
 
 private:
-	boost::asio::io_service*  IO_handler;
-	boost::asio::ip::tcp::socket* socket_forClient;
-	boost::asio::ip::tcp::acceptor* client_acceptor;
-	mode modo;
+	boost::asio::io_service* IO_handler;		//handler para el sistema operativo
+	boost::asio::ip::tcp::socket* socket_forClient;		//socket para la comunicacion
+	boost::asio::ip::tcp::resolver* client_resolver;
+	boost::asio::ip::tcp::resolver::iterator endpoint;		//como el numero de telefono
+	bool error;
+	char YOU_GO[MAX_IPS + 2];
 };
-

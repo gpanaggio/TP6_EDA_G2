@@ -1,32 +1,30 @@
 #include <iostream>
 #include <cstdio>
-#include "mod.h"
+#include <cstring>
 #include <boost/asio.hpp>
-#include <boost/chrono.hpp>
-#include <boost/timer/timer.hpp>
+#include <boost/function.hpp>
+#include <boost/bind.hpp>
 
-#define HELLO_PORT_STR "50013"
-#define SERVER_IP "localhost"
+#define HELLO_PORT 12345
+#define MAX_IPS 255
 
 
-using namespace std;
-
-class server_C
-{
+class server_C {
 public:
 	server_C();
-	void startConnection(const char* host);
-	void receiveMessage();
+	void startConnection();
+	void sendMessage();
+	char * receiveMessage();	//el recieve ahora nos comunica el mensaje
+	void writeCompletitionCallback(const boost::system::error_code& error, std::size_t transfered_bytes);
 	~server_C();
-	mode getmode();
 	bool errorOccurred();
 
 private:
-	boost::asio::io_service* IO_handler;		//handler para el sistema operativo
-	boost::asio::ip::tcp::socket* socket_forServer;		//socket para la comunicacion
-	boost::asio::ip::tcp::resolver* server_resolver;
-	boost::asio::ip::tcp::resolver::iterator endpoint;		//como el numero de telefono
-	mode modo;
+	boost::asio::io_service*  IO_handler;
+	boost::asio::ip::tcp::socket* socket_forServer;
+	boost::asio::ip::tcp::acceptor* server_acceptor;
 	bool error;
+	char YOU_GO[MAX_IPS + 2];
+	char buf[512];				//el buffer
 };
 
