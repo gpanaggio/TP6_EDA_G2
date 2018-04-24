@@ -292,7 +292,7 @@ void simulation_C::requestSeq()
 
 	YOU_GO[0] = c;		//tengo en el primer casillero del paquete la animacion que quiero (A, B, etc...)
 
-	YOU_GO[1] = '1';	//como soy el primero seteo el count en 1
+	YOU_GO[1] = 1;		//como soy el primero seteo el count en 1
 }
 
 void simulation_C::requestOrder()
@@ -333,9 +333,9 @@ bool simulation_C::MustsendMsg()
 string simulation_C::getnext()
 {
 	ifstream src("direcciones.txt");
-	int n = 1;
-	int count = (int)(YOU_GO[1]) - '0';			//tengo en la variable count donde esta el que sigue
-	int next = (int)(YOU_GO[count + 1]) - '0';		//en next tengo la maquina que sigue
+	unsigned int n = 1;
+	unsigned int count = (unsigned int)(YOU_GO[1]);				//tengo en la variable count donde esta el que sigue
+	unsigned int next = (unsigned int)(YOU_GO[count + 1]);		//en next tengo la maquina que sigue
 	string line;
 
 	while (src.good())
