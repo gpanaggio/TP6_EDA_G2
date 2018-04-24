@@ -22,4 +22,4 @@ int main(int argc, char* argv[])
 	Sleep(50); // Le damos 50ms para que llegue el mensaje antes de cerrar el socket.
 
 	return 0;
-}}
+}

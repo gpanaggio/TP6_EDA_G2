@@ -1,11 +1,11 @@
-#include "Allegro_c.h"
+#include "simulation_C.h"
 #include <iostream>
 #include <string>
 
 using namespace std;
 
 
-Allegro_C::Allegro_C()
+simulation_C::simulation_C()
 {
 	if (al_init())	//inicializo allegro
 	{
@@ -52,99 +52,28 @@ Allegro_C::Allegro_C()
 	coordX = 0;
 	coordY = SCREEN_H / 3.0;
 	tick = 0;
+	port = "12345";
 }
 
 
-Allegro_C::Allegro_C(mode modo)
-{
-	if (al_init())	//inicializo allegro
-	{
-		if (al_install_audio())	//inicializo los audios
-		{
-			if (al_init_acodec_addon())
-			{
-				if ((al_reserve_samples(1)))	//para la musica
-				{
-					if (al_init_image_addon())	//addon para las imagenes
-					{
-						if (al_install_keyboard())	//inicializo para que lea teclado
-						{
-							if ((queue = al_create_event_queue()))	//creo la cola de eventos
-							{
-								switch (modo)
-								{
-								case HOMER:
-									if ((timer = al_create_timer(1 / FPS_HOMER))) {}
-									break;
-								case MARIO:
-									if ((timer = al_create_timer(1 / FPS_MARIO))) {}
-									break;
-								case SONIC:
-									if ((timer = al_create_timer(1 / FPS_SONIC))) {}
-									break;
-								case CAT:
-									if ((timer = al_create_timer(1 / FPS_CAT))) {}
-									break;
-								case BOOM1:
-									if ((timer = al_create_timer(1 / FPS_BOOM1))) {}
-									break;
-								case BOOM2:
-									if ((timer = al_create_timer(1 / FPS_BOOM2))) {}
-									break;
-								}
-								if ((display = al_create_display(SCREEN_W, SCREEN_H)))	//creo el display
-								{
-
-									al_register_event_source(this->queue, al_get_keyboard_event_source());	//hago que la cola de eventos registre el teclado
-									al_register_event_source(this->queue, al_get_display_event_source(this->display));	//que registre cosas del display
-									al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
-								}
-
-							}
-						}
-					}
-					else
-						fprintf(stderr, "ERROR: Failed to load Image addon\n");
-				}
-				else
-					fprintf(stderr, "ERROR: Failed to reserve sample\n");
-			}
-			else
-				fprintf(stderr, "ERROR: Failed to install acodec addon\n");
-		}
-		else
-			fprintf(stderr, "ERROR: Failed to install audio\n");
-	}
-	else
-		fprintf(stderr, "ERROR: Failed to initialize allegro system\n");
-
-	coordX = 0;
-	coordY = SCREEN_H / 3.0;
-	tick = 0;
-	this->modo = modo;
-}
-
-
-
-Allegro_C::~Allegro_C()
+simulation_C::~simulation_C()
 {
 }
 
-bool Allegro_C::update_display()
+bool simulation_C::update_display()
 {
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 	return draw_next();
 }
 
-void Allegro_C::loadBitmap()
+void simulation_C::loadBitmap()
 {
 	string carpeta;
 	string name;
 	string bitstr;
-	switch (modo)
+	switch (msg[0])
 	{
 	case HOMER:
-	HOMER:
 		this->HomerBitmap = new ALLEGRO_BITMAP *[10];
 		carpeta = "Homer Dance/";
 		name = "homerdance-F";
@@ -207,17 +136,38 @@ void Allegro_C::loadBitmap()
 	}
 }
 
-ALLEGRO_EVENT_QUEUE * Allegro_C::get_queue()
+ALLEGRO_EVENT_QUEUE * simulation_C::get_queue()
 {
 	return queue;
 }
 
-void Allegro_C::start_timer()
+void simulation_C::start_timer()
 {
-	al_start_timer(timer);
+	switch (msg[0])
+	{
+	case HOMER:
+		if ((timer = al_create_timer(1 / FPS_HOMER))) {}
+		break;
+	case MARIO:
+		if ((timer = al_create_timer(1 / FPS_MARIO))) {}
+		break;
+	case SONIC:
+		if ((timer = al_create_timer(1 / FPS_SONIC))) {}
+		break;
+	case CAT:
+		if ((timer = al_create_timer(1 / FPS_CAT))) {}
+		break;
+	case BOOM1:
+		if ((timer = al_create_timer(1 / FPS_BOOM1))) {}
+		break;
+	case BOOM2:
+		if ((timer = al_create_timer(1 / FPS_BOOM2))) {}
+		break;
+		al_start_timer(timer);
+	}
 }
 
-bool Allegro_C::draw_next()
+bool simulation_C::draw_next()
 {
 	bool reach_end = false;
 
@@ -259,7 +209,7 @@ bool Allegro_C::draw_next()
 }
 
 
-void Allegro_C::destroy_all()
+void simulation_C::destroy_all()
 {
 	al_destroy_display(display);	//destruyo todo
 	al_stop_samples();
@@ -268,7 +218,7 @@ void Allegro_C::destroy_all()
 	al_destroy_event_queue(queue);
 	al_shutdown_image_addon();
 	al_uninstall_audio();
-	switch (modo)
+	switch (msg[0])
 	{
 	case HOMER:
 		delete[] HomerBitmap;
@@ -291,19 +241,20 @@ void Allegro_C::destroy_all()
 	}
 }
 
-void Allegro_C::setmode(mode modo)
+void simulation_C::setmode(mode modo)
 {
 	this->modo = modo;
 }
 
-mode Allegro_C::getmode()
+mode simulation_C::getmode()
 {
 	return this->modo;
 }
 
-void Allegro_C::run()
+void simulation_C::run()
 {
 	bool next = false;		//con esto indico si termine mi secuencia y le aviso al siguiente	
+	loadBitmap();
 	start_timer();
 
 	while (!next)
@@ -319,9 +270,97 @@ void Allegro_C::run()
 				next = true;
 		}
 	}
+	destroy_all();
+
+	(msg[1])++;
 }
 
-void Allegro_C::setmode(mode modo)
+bool simulation_C::MustAskUser()
 {
-	this->modo = modo;
+	return MustAskUse;
+}
+
+void simulation_C::requestSeq()
+{
+	std::cout << "enter the sequence" << std::endl;
+	char c = getchar();
+	*msg = c;		//tengo en el primer casillero del paquete la animacion que quiero (A, B, etc...)
+}
+
+void simulation_C::requestOrder()
+{
+
+}
+
+bool simulation_C::myTurn()
+{
+	bool myturn = false;
+	ifstream src("direcciones.txt");
+	int n = 1;
+	string line;
+
+	while (src.good())
+	{
+		getline(src, line);
+		if (n == msg[1] - '0')
+		{
+			if (!strcmp(line.c_str(), MY_IP))
+				myturn = true;
+		}
+		n++;
+	}
+
+	return myTurn;
+}
+
+bool simulation_C::MustsendMsg()
+{
+	bool mustsendmsg = true;
+	int n = 0;
+
+	ifstream src("direcciones.txt");
+	while (src.good())
+	{
+		n++;		//tengo el numero de lineas
+	}
+
+	if ((msg[1] - '0') == n)	//me fijo si soy la ultima maquina
+		mustsendmsg = false;
+}
+
+string simulation_C::getnext()
+{
+	ifstream src("direcciones.txt");
+	int n = 1;
+	string line;
+
+	while (src.good())
+	{
+		getline(src, line);
+		if (n == msg[1] - '0' + 1)		//agarro la ip del que sigue
+		{
+			return line;
+		}
+		n++;
+	}
+}
+
+string simulation_C::getport()
+{
+	return port;
+}
+
+char * simulation_C::getmsg()
+{
+	return msg;
+}
+
+void simulation_C::SetAskUser()
+{
+	MustAskUse = true;
+}
+
+void simulation_C::SetIP(string ip)
+{
+	my_ip = ip;
 }

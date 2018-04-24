@@ -1,5 +1,7 @@
 #pragma once
-#include "mode.h"
+#include "mod.h"
+#include <string>
+#include <fstream>
 #include <allegro5/allegro5.h> 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_color.h> 
@@ -24,22 +26,32 @@
 #define SCREEN_W (1080)
 #define SCREEN_H (480)
 
+#define MY_IP "mi ip"
 
-class Allegro_c
+class simulation_C
 {
 public:
-	Allegro_c();
-	Allegro_c(mode);
-	~Allegro_c();
+	simulation_C();
+	~simulation_C();
 	bool update_display();	//el update devuelve un TRUE cuando se termino la secuencia
 	void loadBitmap();
 	void start_timer();
 	bool draw_next();
 	void destroy_all();
 	void setmode(mode);
-	void run();
-	ALLEGRO_EVENT_QUEUE	* get_queue();
 	mode getmode();
+	ALLEGRO_EVENT_QUEUE	* get_queue();
+	void run();
+	void SetAskUser();
+	bool MustAskUser();
+	void requestSeq();
+	void requestOrder();
+	bool myTurn();
+	bool MustsendMsg();
+	string getnext();	//devuelve un string con la direccion ip de que sigue
+	string getport();
+	char * getmsg();
+	void setIP(string);
 
 private:
 	ALLEGRO_SAMPLE * music = NULL;
@@ -57,5 +69,8 @@ private:
 	float coordY;
 	int tick;
 	mode modo;
+	bool MustAskUse;		//usamos esta variable para saber si esta es la maquina que tiene que hablar con el user
+	char * msg;
+	string port;			//el puerto al que escuchamos
+	string my_ip;
 };
-
