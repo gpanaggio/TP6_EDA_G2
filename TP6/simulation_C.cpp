@@ -312,19 +312,19 @@ bool simulation_C::myTurn()
 		getline(src, line);
 		if (n == YOU_GO[1] - '0')		//nos ubicamos en la linea indicada segun el count
 		{
-			if (!strcmp(line.c_str(), my_ip))	//si las ip´s coinciden se que es mi turno
+			if (!strcmp(line.c_str(), my_ip.c_str()))	//si las ip´s coinciden se que es mi turno
 				myturn = true;
 		}
 		n++;
 	}
 
-	return myTurn;
+	return myturn;
 }
 
 bool simulation_C::MustsendMsg()
 {
 	bool mustsendmsg = true;
-	int n = ((int)YOU_GO[1]-'0');	//hago un casteo explicito del count
+	int n = ((int)YOU_GO[1] - '0');	//hago un casteo explicito del count
 	if (YOU_GO[n + 2] == '\0')		//me fijo si despues de mi no viene nadie (el string termina)
 		mustsendmsg = false;
 	return mustsendmsg;
@@ -334,12 +334,14 @@ string simulation_C::getnext()
 {
 	ifstream src("direcciones.txt");
 	int n = 1;
+	int count = (int)(YOU_GO[1]) - '0';			//tengo en la variable count donde esta el que sigue
+	int next = (int)(YOU_GO[count + 1]) - '0';		//en next tengo la maquina que sigue
 	string line;
 
 	while (src.good())
 	{
 		getline(src, line);
-		if (n == YOU_GO[1] - '0' + 1)		//agarro la ip del que sigue
+		if (n == next)		//me paro en la linea del txt de el que sigue
 		{
 			return line;
 		}

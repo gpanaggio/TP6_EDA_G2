@@ -28,6 +28,8 @@
 
 #define MAX_IPs (255)
 
+using namespace std;
+
 class simulation_C
 {
 public:
