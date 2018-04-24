@@ -31,8 +31,6 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-	simulation_C sim;
-
 	bool exit = false;
 
 	do
