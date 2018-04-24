@@ -1,14 +1,27 @@
-#ifndef parescallback
-
-#include "simulation_C.h"
-#include <stdio.h>
-#include <string.h>
+#pragma once
 #include <string>
+#include <iostream>
 
-typedef int(*pCallback) (char * key, char * value, void * userdata);
+//#define NPARAMETERS 3
+//#define NKEYS 3
+//#define NVALUES 3 //Puede cambiarse el numero para la cantidad de parametros, claves y valores que se deseen
 
-char* strlower(char str[]);
 
-int callback(char *key, char *value, void *userData, simulation_C *sim);
+int parseCallback(char *key, char *value, void *userData);
 
-#endif
+/*
+typedef struct
+{
+	char *  parameters[NPARAMETERS];
+	char *  key[NKEYS];
+	char *  value[NVALUES];
+}userData;
+*/
+class userData
+{
+	public:
+	std::string ip;
+	bool iniciar;
+	bool invalidData;	//un control si se ingreso mal un dato se puede borrar
+	userData() { ip = "0.0.0.0"; iniciar = false; invalidData = false; };
+};

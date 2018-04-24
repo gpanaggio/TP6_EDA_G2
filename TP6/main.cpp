@@ -4,7 +4,7 @@
 #include "simulation_C.h"
 #include "structure.h"
 #include "parsecallback.h"
-#include "parsecmdline.h"
+//#include "parsecmdline.h"
 
 using namespace std;
 
@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 	userInput_t userData = { 0 };
 
 	simulation_C sim;
-
+	/*
 	switch (parseCmdLine(argc, argv, &callback, &userData, &sim))
 	{
 	case ERROR1:
@@ -59,5 +59,6 @@ int main(int argc, char *argv[])
 		S->startConnection();
 		sim.newMsg(S->receiveMessage());
 	} while (!exit);
+	*/
 	return 0;
 }

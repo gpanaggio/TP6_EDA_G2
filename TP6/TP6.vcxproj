@@ -131,7 +131,7 @@
     <ClInclude Include="client_C.h" />
     <ClInclude Include="mod.h" />
     <ClInclude Include="parsecallback.h" />
-    <ClInclude Include="parsecmdline.h" />
+    <ClInclude Include="parsecmd.h" />
     <ClInclude Include="server_C.h" />
     <ClInclude Include="simulation_C.h" />
     <ClInclude Include="structure.h" />
@@ -140,7 +140,7 @@
     <ClCompile Include="client_C.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="parsecallback.cpp" />
-    <ClCompile Include="parsecmdline.cpp" />
+    <ClCompile Include="Parsecmd.cpp" />
     <ClCompile Include="server_C.cpp" />
     <ClCompile Include="simulation_C.cpp" />
   </ItemGroup>

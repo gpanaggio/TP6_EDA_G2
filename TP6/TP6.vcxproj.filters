@@ -27,13 +27,13 @@
     <ClInclude Include="mod.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="parsecmdline.h">
+    <ClInclude Include="structure.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="parsecallback.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="structure.h">
+    <ClInclude Include="parsecmd.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
@@ -50,10 +50,10 @@
     <ClCompile Include="main.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="parsecmdline.cpp">
+    <ClCompile Include="parsecallback.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="parsecallback.cpp">
+    <ClCompile Include="Parsecmd.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
