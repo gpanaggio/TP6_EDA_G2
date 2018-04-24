@@ -142,7 +142,7 @@ void Allegro_c::loadBitmap()
 	switch (modo)
 	{
 	case HOMER:
-	HOMER:
+	
 		this->HomerBitmap = new ALLEGRO_BITMAP *[10];
 		carpeta = "Homer Dance/";								//si los archivos estan contenidos en una carpeta hay que poner esto
 		name = "homerdance-F";
@@ -311,4 +311,8 @@ void Allegro_c::run()
 				next = true;
 		}
 	}
+}
+mode Allegro_c::getmode()
+{
+	return this->modo;
 }
