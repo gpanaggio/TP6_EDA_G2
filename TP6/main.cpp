@@ -1,15 +1,16 @@
 #include <iostream>
+#include "pCallback.h"
 #include "client_C.h"
 #include "server_C.h"
 #include "simulation_C.h"
 
 using namespace std;
 
-int main(void)
+int main(int argc, char ** argv)
 {
-//	ParseCmdLine();		//el parse tiene que setear el MustAskUser en TRUE
-
 	simulation_C sim;
+
+	ParseCmdLine(argc, argv, &sim);		//el parse tiene que setear el MustAskUser en TRUE
 
 	bool exit = false;
 
