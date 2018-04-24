@@ -1,4 +1,4 @@
-#include "parsecommandline.h"
+#include "parsecmdline.h"
 #include "structure.h"
 #include "simulation_C.h"
 
@@ -19,7 +19,7 @@ int parseCmdLine(int argc, char * argv[], pCallback p, void * userData, simulati
 
 		if (retValue == NOERROR)
 		{
-			retValue = (*p)(keyword, (char *)(i + 1 == argc ? argv[i] : argv[i + 1]), userData);
+			retValue = (*p)(keyword, (char *)(i + 1 == argc ? argv[i] : argv[i + 1]), userData, simulation_C *sim);
 			keyword = NULL;
 		}
 	}
