@@ -1,16 +1,38 @@
 #include <iostream>
-#include "pCallback.h"
 #include "client_C.h"
 #include "server_C.h"
 #include "simulation_C.h"
+#include "structure.h"
+#include "parsecallback.h"
+#include "parsecmdline.h"
 
 using namespace std;
 
-int main(int argc, char ** argv)
+int main(int argc, char *argv[])
 {
+
+	userInput_t userData = { 0 };
+
 	simulation_C sim;
 
-	ParseCmdLine(argc, argv, &sim);		//el parse tiene que setear el MustAskUser en TRUE
+	switch (parseCmdLine(argc, argv, &callback, &userData, &sim))
+	{
+	case ERROR1:
+		printf("Error type 1\n");
+		while (getchar() != '\n');	//Afrefo asi no desaparece la consola
+		return 0;
+	case ERROR2:
+		printf("Error type 2\n");
+		while (getchar() != '\n');
+		return 0;
+	case ERROR3:
+		printf("Error type 3\n");
+		while (getchar() != '\n');
+		return 0;
+	}
+//	ParseCmdLine();		//el parse tiene que setear el MustAskUser en TRUE
+
+	simulation_C sim;
 
 	bool exit = false;
 
