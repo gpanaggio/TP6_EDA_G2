@@ -5,7 +5,7 @@
 #include <boost/function.hpp>
 #include <boost/bind.hpp>
 
-#define HELLO_PORT 12345
+#define HELLO_PORT "12345"
 #define MAX_IPS 255
 
 

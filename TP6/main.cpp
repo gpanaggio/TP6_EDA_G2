@@ -39,12 +39,16 @@ int main(int argc, char *argv[])		//CAMBIE DE LUGAR LAS DIRECCIONES
 		{
 			client_C * C = new client_C;		//creamos un cliente
 			C->startConnection(sim->getnext(), sim->getport());
+			cout << "por mandar mensjae" << endl;
 			C->sendMessage(sim->getmsg());
+			cout << "enviado" << endl;
 			delete C;
 		}
-		server_C * S = new server_C;
-		S->startConnection();
-		sim->newMsg(S->receiveMessage());
+		//server_C  S;// = new server_C;
+		//S.startConnection();
+
+		//sim->newMsg(S.receiveMessage());
+		
 	} while (!exit);
 
 	delete userdata;

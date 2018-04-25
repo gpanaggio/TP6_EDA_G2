@@ -1,5 +1,5 @@
 #include "server_C.h"
-
+using namespace std;
 
 
 server_C::server_C()
@@ -8,7 +8,7 @@ server_C::server_C()
 	IO_handler = new boost::asio::io_service();
 	socket_forServer = new boost::asio::ip::tcp::socket(*IO_handler);
 	server_acceptor = new boost::asio::ip::tcp::acceptor(*IO_handler,
-		boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), HELLO_PORT));
+		boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), stoi(HELLO_PORT)));
 	std::cout << std::endl << "Ready. Port " << HELLO_PORT << " created" << std::endl;
 }
 
@@ -29,7 +29,7 @@ void server_C::writeCompletitionCallback(const boost::system::error_code& error,
 
 void server_C::startConnection() {
 	server_acceptor->accept(*socket_forServer);
-	socket_forServer->non_blocking(true);
+	//socket_forServer->non_blocking(true);
 }
 
 void server_C::sendMessage() {
@@ -57,10 +57,11 @@ char * server_C::receiveMessage() {
 	do
 	{
 		len = socket_forServer->read_some(boost::asio::buffer(buf), error);		//la linea clave, guardo lo que leo en el buffer, y uso el len para saber cuanto lei
-		if (!error)
-			buf[len] = '\0';
+
 
 	} while (error.value() == WSAEWOULDBLOCK);
+	if (!error)
+		buf[len] = '\0';
 
 	if (!error)
 	{
