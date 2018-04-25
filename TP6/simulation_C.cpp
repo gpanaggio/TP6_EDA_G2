@@ -372,7 +372,7 @@ bool simulation_C::MustsendMsg()
 {
 	bool mustsendmsg = true;
 	int n = ((int)YOU_GO[1]);	//hago un casteo explicito del count
-	if (YOU_GO[n + 2] == '\0')		//me fijo si despues de mi no viene nadie (el string termina)
+	if (YOU_GO[n + 1] == '\0')		//me fijo si despues de mi no viene nadie (el string termina)
 		mustsendmsg = false;
 	return mustsendmsg;
 }
