@@ -25,7 +25,7 @@ simulation_C::simulation_C()
 								{
 									al_register_event_source(this->queue, al_get_keyboard_event_source());	//hago que la cola de eventos registre el teclado
 									al_register_event_source(this->queue, al_get_display_event_source(this->display));	//que registre cosas del display
-									al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
+									//al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
 								}
 							}
 						}
@@ -140,6 +140,7 @@ ALLEGRO_EVENT_QUEUE * simulation_C::get_queue()
 
 void simulation_C::start_timer()
 {
+	al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
 	switch (YOU_GO[0])
 	{
 	case HOMER:
