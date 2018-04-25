@@ -8,7 +8,7 @@
 
 using namespace std;
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[])		//CAMBIE DE LUGAR LAS DIRECCIONES
 {
 	pCallback p = parseCallback;
 	userData *  userdata = new userData;
@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 	if (userdata->iniciar)
 		sim->SetAskUser();
 
-	sim.setIP(userdata->ip);
+	sim->setIP(userdata->ip);
 
 	bool exit = false;
 

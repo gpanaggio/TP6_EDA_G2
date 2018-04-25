@@ -166,8 +166,8 @@ void simulation_C::start_timer()
 		if ((timer = al_create_timer(1 / FPS_BOOM2))) 
 			al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
 		break;
-		al_start_timer(timer);
 	}
+	al_start_timer(timer);
 }
 
 bool simulation_C::draw_next()
@@ -393,7 +393,6 @@ string simulation_C::getnext()
 		}
 		n++;
 	}
-	return NULL;
 }
 
 string simulation_C::getport()
