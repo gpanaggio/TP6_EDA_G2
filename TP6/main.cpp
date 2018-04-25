@@ -20,6 +20,8 @@ int main(int argc, char *argv[])
 	if (userdata->iniciar)
 		sim->SetAskUser();
 
+	sim.setIP(userdata->ip);
+
 	bool exit = false;
 
 	do
