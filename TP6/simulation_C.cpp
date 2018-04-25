@@ -387,6 +387,7 @@ string simulation_C::getnext()
 		}
 		n++;
 	}
+	return NULL;
 }
 
 string simulation_C::getport()

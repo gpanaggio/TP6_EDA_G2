@@ -134,7 +134,6 @@
     <ClInclude Include="parsecmd.h" />
     <ClInclude Include="server_C.h" />
     <ClInclude Include="simulation_C.h" />
-    <ClInclude Include="structure.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="client_C.cpp" />

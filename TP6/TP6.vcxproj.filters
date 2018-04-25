@@ -27,9 +27,6 @@
     <ClInclude Include="mod.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="structure.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="parsecallback.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>

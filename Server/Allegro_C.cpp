@@ -321,7 +321,7 @@ void Allegro_C::run()
 	}
 }
 
-void Allegro_C::setmode(mode modo)
-{
-	this->modo = modo;
-}
+//void Allegro_C::setmode(mode modo)
+//{
+//	this->modo = modo;
+//}

@@ -2,35 +2,23 @@
 #include "client_C.h"
 #include "server_C.h"
 #include "simulation_C.h"
-#include "structure.h"
 #include "parsecallback.h"
-//#include "parsecmdline.h"
+#include "parsecmd.h"
+#include "parsecmd.h"
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
+	pCallback p = parseCallback;
+	userData *  userdata = new userData;
 
-	userInput_t userData = { 0 };
+	parseCmdLine(argc, argv, p, (void *)userdata);
 
 	simulation_C sim;
-	/*
-	switch (parseCmdLine(argc, argv, &callback, &userData, &sim))
-	{
-	case ERROR1:
-		printf("Error type 1\n");
-		while (getchar() != '\n');	//Afrefo asi no desaparece la consola
-		return 0;
-	case ERROR2:
-		printf("Error type 2\n");
-		while (getchar() != '\n');
-		return 0;
-	case ERROR3:
-		printf("Error type 3\n");
-		while (getchar() != '\n');
-		return 0;
-	}
 
+	if (userdata->iniciar)
+		sim.SetAskUser();
 
 	bool exit = false;
 
@@ -59,6 +47,8 @@ int main(int argc, char *argv[])
 		S->startConnection();
 		sim.newMsg(S->receiveMessage());
 	} while (!exit);
-	*/
+
+	delete userdata;
+
 	return 0;
 }
