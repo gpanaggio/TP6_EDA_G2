@@ -12,11 +12,8 @@ class client_C {
 public:
 	client_C();
 	void startConnection(string host, string port);
-	//void receiveMessage();
 	void sendMessage(char * msg);
-	void setbuffer(char * buff);
 	~client_C();
-	//void connect(string next_ip, string  )
 
 	bool errorOccurred();
 

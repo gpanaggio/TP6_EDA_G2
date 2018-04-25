@@ -42,8 +42,6 @@ int main(int argc, char *argv[])		//CAMBIE DE LUGAR LAS DIRECCIONES
 			C->sendMessage(sim->getmsg());
 			delete C;
 		}
-		else
-			exit = true;
 		server_C * S = new server_C;
 		S->startConnection();
 		sim->newMsg(S->receiveMessage());
