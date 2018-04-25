@@ -33,8 +33,7 @@ int main(int argc, char *argv[])		//CAMBIE DE LUGAR LAS DIRECCIONES
 		}
 		if (sim->myTurn())
 		{
-			sim->run();
-			
+			sim->run();	
 		}
 		if (sim->MustsendMsg())
 		{

@@ -350,13 +350,14 @@ bool simulation_C::myTurn()
 {
 	bool myturn = false;
 	ifstream src("direcciones.txt");
+	int count = (int)(YOU_GO[1]);
 	int n = 1;
 	string line;
 
 	while (src.good())
 	{
 		getline(src, line);
-		if (n == YOU_GO[1])		//nos ubicamos en la linea indicada segun el count
+		if (n == YOU_GO[1 + count])		//nos ubicamos en la linea indicada segun el count
 		{
 			if (!strcmp(line.c_str(), my_ip.c_str()))	//si las ip´s coinciden se que es mi turno
 				myturn = true;
