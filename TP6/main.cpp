@@ -15,40 +15,41 @@ int main(int argc, char *argv[])
 
 	parseCmdLine(argc, argv, p, (void *)userdata);
 
-	simulation_C sim;
+	simulation_C * sim = new simulation_C;
 
 	if (userdata->iniciar)
-		sim.SetAskUser();
+		sim->SetAskUser();
 
 	bool exit = false;
 
 	do
 	{
-		if (sim.MustAskUser())	//el el MAU esta seteado en TRUE le va a preguntar a usuario
+		if (sim->MustAskUser())	//el el MAU esta seteado en TRUE le va a preguntar a usuario
 		{
-			sim.requestSeq();
-			sim.requestOrder();
+			sim->requestSeq();
+			sim->requestOrder();
 		}
-		if (sim.myTurn())
+		if (sim->myTurn())
 		{
-			sim.run();
+			sim->run();
 			
 		}
-		if (sim.MustsendMsg())
+		if (sim->MustsendMsg())
 		{
 			client_C * C = new client_C;		//creamos un cliente
-			C->startConnection(sim.getnext(), sim.getport());
-			C->sendMessage(sim.getmsg());
+			C->startConnection(sim->getnext(), sim->getport());
+			C->sendMessage(sim->getmsg());
 			delete C;
 		}
 		else
 			exit = true;
 		server_C * S = new server_C;
 		S->startConnection();
-		sim.newMsg(S->receiveMessage());
+		sim->newMsg(S->receiveMessage());
 	} while (!exit);
 
 	delete userdata;
+	delete sim;
 
 	return 0;
 }
