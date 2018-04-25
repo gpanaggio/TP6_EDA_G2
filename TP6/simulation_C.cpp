@@ -140,26 +140,31 @@ ALLEGRO_EVENT_QUEUE * simulation_C::get_queue()
 
 void simulation_C::start_timer()
 {
-	al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
 	switch (YOU_GO[0])
 	{
 	case HOMER:
-		if ((timer = al_create_timer(1 / FPS_HOMER))) {}
+		if ((timer = al_create_timer(1 / FPS_HOMER)))
+			al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
 		break;
 	case MARIO:
-		if ((timer = al_create_timer(1 / FPS_MARIO))) {}
+		if ((timer = al_create_timer(1 / FPS_MARIO)))
+			al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
 		break;
 	case SONIC:
-		if ((timer = al_create_timer(1 / FPS_SONIC))) {}
+		if ((timer = al_create_timer(1 / FPS_SONIC)))
+			al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
 		break;
 	case CAT:
-		if ((timer = al_create_timer(1 / FPS_CAT))) {}
+		if ((timer = al_create_timer(1 / FPS_CAT))) 
+			al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
 		break;
 	case BOOM1:
-		if ((timer = al_create_timer(1 / FPS_BOOM1))) {}
+		if ((timer = al_create_timer(1 / FPS_BOOM1)))
+			al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
 		break;
 	case BOOM2:
-		if ((timer = al_create_timer(1 / FPS_BOOM2))) {}
+		if ((timer = al_create_timer(1 / FPS_BOOM2))) 
+			al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
 		break;
 		al_start_timer(timer);
 	}
@@ -169,7 +174,7 @@ bool simulation_C::draw_next()
 {
 	bool reach_end = false;
 
-	switch (modo)
+	switch (YOU_GO[0])
 	{
 	case HOMER:
 		(coordX > SCREEN_W) ? reach_end = true : coordX += VEL_HOMER;		//si llego al final le aviso
@@ -351,7 +356,7 @@ bool simulation_C::myTurn()
 	while (src.good())
 	{
 		getline(src, line);
-		if (n == YOU_GO[1] - '0')		//nos ubicamos en la linea indicada segun el count
+		if (n == YOU_GO[1])		//nos ubicamos en la linea indicada segun el count
 		{
 			if (!strcmp(line.c_str(), my_ip.c_str()))	//si las ip´s coinciden se que es mi turno
 				myturn = true;
