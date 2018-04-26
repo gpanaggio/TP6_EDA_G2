@@ -147,7 +147,7 @@ ALLEGRO_EVENT_QUEUE * simulation_C::get_queue()
 
 void simulation_C::start_timer()
 {
-	switch (YOU_GO[0])
+	switch (tolower(YOU_GO[0]))
 	{
 	case HOMER:
 		if ((timer = al_create_timer(1 / FPS_HOMER)))
@@ -181,7 +181,7 @@ bool simulation_C::draw_next()
 {
 	bool reach_end = false;
 
-	switch (YOU_GO[0])
+	switch (tolower(YOU_GO[0]))
 	{
 	case HOMER:
 		(coordX > SCREEN_W) ? reach_end = true : coordX += VEL_HOMER;		//si llego al final le aviso
@@ -228,7 +228,7 @@ void simulation_C::destroy_all()
 	al_destroy_event_queue(queue);
 	al_shutdown_image_addon();
 	al_uninstall_audio();
-	switch (YOU_GO[0])
+	switch (tolower(YOU_GO[0]))
 	{
 	case HOMER:
 		delete[] HomerBitmap;
@@ -306,11 +306,11 @@ void simulation_C::requestSeq()
 		do
 		{
 		} while (getchar() != '\n');	//limpio el buffer que que no considere el entre key
-		if (c<'A' || c>'F')
+		if (tolower(c)<'a' || tolower(c)>'f')
 			std::cout << "invalid input, enter from 'A' to 'F'" << std::endl;
-	} while (c<'A' || c>'F');
+	} while (tolower(c)<'a' || tolower(c)>'f');
 
-	YOU_GO[0] = c;		//tengo en el primer casillero del paquete la animacion que quiero (A, B, etc...)
+	YOU_GO[0] = tolower(c);		//tengo en el primer casillero del paquete la animacion que quiero (A, B, etc...)
 	
 	YOU_GO[1] = 1;		//como soy el primero seteo el count en 1
 }

@@ -1,2 +1,2 @@
 #pragma once
-enum mode { CAT='A', BOOM1, BOOM2, HOMER, MARIO, SONIC };
+enum mode { CAT='a', BOOM1, BOOM2, HOMER, MARIO, SONIC };
