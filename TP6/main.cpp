@@ -44,6 +44,7 @@ int main(int argc, char *argv[])		//CAMBIE DE LUGAR LAS DIRECCIONES
 			cout << "enviado" << endl;
 			delete C;
 		}
+		sim->clearMsg(); // limpio el you_go para que no haya errores al copiar el nuevo mensaje que escucha el servidor
 		//server_C  S;// = new server_C;
 		//S.startConnection();
 

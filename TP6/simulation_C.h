@@ -56,6 +56,7 @@ public:
 	char * getmsg();
 	void setIP(string);
 	void newMsg(char *);
+	void clearMsg();
 	
 
 private:

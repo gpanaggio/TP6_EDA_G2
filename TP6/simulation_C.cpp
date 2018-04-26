@@ -59,7 +59,14 @@ simulation_C::~simulation_C()
 
 bool simulation_C::update_display()
 {
-	al_clear_to_color(al_map_rgb(0, 0, 0));
+	if ((YOU_GO[0] == HOMER) || (YOU_GO[0] == MARIO) || (YOU_GO[0] == SONIC) || (YOU_GO[0] == CAT))
+	{
+		al_clear_to_color(al_map_rgb(255, 255, 255));
+	}
+	else if ((YOU_GO[0] == BOOM1) || (YOU_GO[0] == BOOM2))
+	{
+		al_clear_to_color(al_map_rgb(0, 0, 0));
+	}
 	return draw_next();
 }
 
@@ -285,7 +292,14 @@ bool simulation_C::MustAskUser()
 
 void simulation_C::requestSeq()
 {
-	std::cout << "enter the animation" << std::endl;
+	std::cout << "Please enter the animation" << std::endl;
+	std::cout << "You can choose from:" << std::endl;
+	std::cout << "A.Cat" << std::endl;
+	std::cout << "B.Awesome explosion" << std::endl;
+	std::cout << "C.Cool explosion" << std::endl;
+	std::cout << "D.Dancing Homer" << std::endl;
+	std::cout << "E.Mario Bros" << std::endl;
+	std::cout << "F.Sonic" << std::endl;
 	char c;
 	do {
 		c = getchar();
@@ -297,51 +311,66 @@ void simulation_C::requestSeq()
 	} while (c<'A' || c>'F');
 
 	YOU_GO[0] = c;		//tengo en el primer casillero del paquete la animacion que quiero (A, B, etc...)
-
+	
 	YOU_GO[1] = 1;		//como soy el primero seteo el count en 1
 }
 
 void simulation_C::requestOrder()
 {
 	using namespace std;
-	cout << "Indique la secuencia con la que desea enviar el mensaje." << endl;
-	cout << "Para esto escriba cada uno escriba el numero de maquina seguido de un espacio en el orden que quiera." << endl;
-	cout << "Solo se aceptaran numeros del 1 al 255" << endl;
-
-	std::string newInput = "";
-	std::string input = "";
-	std::getline(cin, input);
-	std::stringstream ss(input);
-	int numeros[255];
-	int num = 0;
-	int cont = 0;
-	bool restart = false;
-	while (std::getline(ss, input, ' '))
+	cout << "Choose now the sequence in which you want see the animation." << endl;
+	cout << "To do that write a number follow by a space and after you finish writing the sequence press space." << endl;
+	cout << "It will only accept numbers from 1 to 255." << endl;
+	bool exit = false;
+	while (!exit)
 	{
+		std::string newInput = "";
+		std::string input = "";
+		std::getline(cin, input);
+		std::stringstream ss(input);
+		int numeros[255];
+		int num = 0;
+		int cont = 0;
+		bool restart = false;
+		while (std::getline(ss, input, ' '))
+		{
 
-		if (input == "\n")
-		{
-			break;
-		}
-		else
-		{
-			if (input.length() > 0)
+			if ((input == "\n") || restart)
 			{
-
-				num = atoi(input.c_str());
-				if ((num >= 1) && (num <= 255))
+				break;
+			}
+			else
+			{
+				if (input.length() > 0)
 				{
-					numeros[cont] = num;
-					cont++;
+
+					num = atoi(input.c_str());
+					if ((num >= 1) && (num <= 255))
+					{
+						numeros[cont] = num;
+						cont++;
+						restart = false;
+					}
+					else
+					{
+						restart = true;
+					}
 				}
 			}
+
 		}
-
-	}
-
-	for (int i = 0; i < cont; i++)
-	{
-		YOU_GO[i + 2] = numeros[i];
+		if (!restart)
+		{
+			for (int i = 0; i < cont; i++)
+			{
+				YOU_GO[i + 2] = numeros[i];
+			}
+			exit = true;
+		}
+		else if (restart)
+		{
+			cout << "Wrong input please enter the whole sequence again with a number from 1 to 255 follow by an space" << endl;
+		}
 	}
 	//NO OLVIDAR QUE LUEGO DE LA SECUENCIA HAY QUE PONER EL TERMINADOR
 }
@@ -419,4 +448,12 @@ void simulation_C::setIP(string ip)
 void simulation_C::newMsg(char * msg)
 {
 	strcpy_s(YOU_GO, 257, msg);
+}
+
+void simulation_C::clearMsg()
+{
+	for (int i = 0; i < MAX_IPs + 2; i++)
+	{
+		YOU_GO[i] = '\0';
+	}
 }
