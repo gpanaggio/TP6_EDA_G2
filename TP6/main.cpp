@@ -66,14 +66,19 @@ int main(int argc, char *argv[])		//CAMBIE DE LUGAR LAS DIRECCIONES
 			
 			delete C;
 		}
+		if (sim->Imlast())
+		{
+			sim->SetAskUser(true);
+		}
+		else
+		{
+			sim->clearMsg(); //limpio el you_go para que no haya errores al copiar el nuevo mensaje que escucha el servidor
+			server_C * S = new server_C;
 
-
-			sim->clearMsg(); // limpio el you_go para que no haya errores al copiar el nuevo mensaje que escucha el servidor
-			server_C * S= new server_C;
-			
 			S->startConnection();
 			sim->newMsg(S->receiveMessage());
 			delete S;	//borro el server asi cierro los sockets	
+		}
 		
 	} while (!exit);
 

@@ -12,6 +12,7 @@ simulation_C::simulation_C()
 	tick = 0;
 	port = "12345";
 	MustAskUse = false;
+	YOU_GO[1] = 1;
 }
 
 
@@ -485,4 +486,15 @@ bool simulation_C::asktoStart()
 		}
 	}
 	return keepOpen;
+}
+
+bool simulation_C::Imlast()
+{
+	bool last = false;
+	int n = ((int)YOU_GO[1]);
+	if ((YOU_GO[n + 1] == '\0') && (YOU_GO[0] != '\0'))
+	{
+		last = true;				//me fijo si soy el ultimo de la lista
+	}
+	return last;
 }

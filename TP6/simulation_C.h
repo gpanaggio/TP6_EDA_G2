@@ -59,6 +59,7 @@ public:
 	void newMsg(char *);
 	void clearMsg();
 	bool asktoStart();
+	bool Imlast();
 
 private:
 	ALLEGRO_SAMPLE * music = NULL;
