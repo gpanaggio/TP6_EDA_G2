@@ -11,6 +11,7 @@
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_audio.h>
 
+#define FPS	(10.0)
 #define FPS_HOMER (1.0/10.0)
 #define FPS_MARIO (1.0/25.0)
 #define FPS_SONIC (1.0/(50.0/3.0))
@@ -42,11 +43,13 @@ public:
 	void destroy_all();
 	void draw();
 	//termina funciones de allegro
+	void setmode(mode);
+	mode getmode();
 	void run();
 	void SetAskUser(bool);
 	bool MustAskUser();
 	void requestSeq();
-	void requestOrder();	
+	void requestOrder();	//LOS GUARDO EN EL YOU_GO
 	bool myTurn();
 	bool MustsendMsg();
 	string getnext();	//devuelve un string con la direccion ip de que sigue

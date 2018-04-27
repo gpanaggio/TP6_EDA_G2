@@ -12,7 +12,7 @@ simulation_C::simulation_C()
 	tick = 0;
 	port = "12345";
 	MustAskUse = false;
-	YOU_GO[0] = 0;
+	YOU_GO[1] = 1;
 }
 
 
@@ -162,6 +162,16 @@ void simulation_C::create_all()
 	}
 	else
 		fprintf(stderr, "ERROR: Failed to initialize allegro system\n");
+}
+
+void simulation_C::setmode(mode modo)
+{
+	this->modo = modo;
+}
+
+mode simulation_C::getmode()
+{
+	return this->modo;
 }
 
 void simulation_C::run()
