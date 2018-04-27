@@ -11,12 +11,13 @@
 #include <allegro5/allegro_acodec.h>
 #include <allegro5/allegro_audio.h>
 
-#define FPS_HOMER (1.0/0.1)
-#define FPS_MARIO (1.0/0.04)
-#define FPS_SONIC (1.0/0.06)
-#define FPS_CAT (1.0/0.1)
-#define FPS_BOOM1 (1.0/0.12)
-#define FPS_BOOM2 (1.0/0.1)
+#define FPS	(10.0)
+#define FPS_HOMER (1.0/10.0)
+#define FPS_MARIO (1.0/25.0)
+#define FPS_SONIC (1.0/(50.0/3.0))
+#define FPS_CAT (1.0/10.0)
+#define FPS_BOOM1 (1.0/(25.0/3.0))
+#define FPS_BOOM2 (1.0/10.0)
 
 #define VEL_HOMER (100)				//100 px por frame
 #define VEL_MARIO (2)
@@ -35,19 +36,20 @@ class simulation_C
 public:
 	simulation_C();
 	~simulation_C();
-	bool update_display();	//el update devuelve un TRUE cuando se termino la secuencia
+	
+	// funciones de allegro
 	void loadBitmap();
-	void start_timer();
-	bool draw_next();
+	void create_all();
 	void destroy_all();
+	void draw();
+	//termina funciones de allegro
 	void setmode(mode);
 	mode getmode();
-	ALLEGRO_EVENT_QUEUE	* get_queue();
 	void run();
-	void SetAskUser();
+	void SetAskUser(bool);
 	bool MustAskUser();
 	void requestSeq();
-	void requestOrder();	
+	void requestOrder();	//LOS GUARDO EN EL YOU_GO
 	bool myTurn();
 	bool MustsendMsg();
 	string getnext();	//devuelve un string con la direccion ip de que sigue
@@ -56,8 +58,7 @@ public:
 	void setIP(string);
 	void newMsg(char *);
 	void clearMsg();
-	bool Imlast();
-	
+	bool asktoStart();
 
 private:
 	ALLEGRO_SAMPLE * music = NULL;
@@ -79,4 +80,5 @@ private:
 	char YOU_GO[MAX_IPs + 2];			//tendremos que hacerle una malloc para guardar memoria, o un YOU_GO = new char[257] ?
 	string port;			//el puerto al que escuchamos
 	string my_ip;
+
 };

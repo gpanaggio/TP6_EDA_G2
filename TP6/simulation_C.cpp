@@ -7,44 +7,6 @@ using namespace std;
 
 simulation_C::simulation_C()
 {
-	if (al_init())	//inicializo allegro
-	{
-		if (al_install_audio())	//inicializo los audios
-		{
-			if (al_init_acodec_addon())
-			{
-				if ((al_reserve_samples(1)))	//para la musica
-				{
-					if (al_init_image_addon())	//addon para las imagenes
-					{
-						if (al_install_keyboard())	//inicializo para que lea teclado
-						{
-							if ((queue = al_create_event_queue()))	//creo la cola de eventos
-							{
-								if ((display = al_create_display(SCREEN_W, SCREEN_H)))	//creo el display
-								{
-									al_register_event_source(this->queue, al_get_keyboard_event_source());	//hago que la cola de eventos registre el teclado
-									al_register_event_source(this->queue, al_get_display_event_source(this->display));	//que registre cosas del display
-									//al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
-								}
-							}
-						}
-					}
-					else
-						fprintf(stderr, "ERROR: Failed to load Image addon\n");
-				}
-				else
-					fprintf(stderr, "ERROR: Failed to reserve sample\n");
-			}
-			else
-				fprintf(stderr, "ERROR: Failed to install acodec addon\n");
-		}
-		else
-			fprintf(stderr, "ERROR: Failed to install audio\n");
-	}
-	else
-		fprintf(stderr, "ERROR: Failed to initialize allegro system\n");
-
 	coordX = 0;
 	coordY = SCREEN_H / 3.0;
 	tick = 0;
@@ -55,19 +17,6 @@ simulation_C::simulation_C()
 
 simulation_C::~simulation_C()
 {
-}
-
-bool simulation_C::update_display()
-{
-	if ((YOU_GO[0] == HOMER) || (YOU_GO[0] == MARIO) || (YOU_GO[0] == SONIC) || (YOU_GO[0] == CAT))
-	{
-		al_clear_to_color(al_map_rgb(255, 255, 255));
-	}
-	else if ((YOU_GO[0] == BOOM1) || (YOU_GO[0] == BOOM2))
-	{
-		al_clear_to_color(al_map_rgb(0, 0, 0));
-	}
-	return draw_next();
 }
 
 void simulation_C::loadBitmap()
@@ -140,85 +89,6 @@ void simulation_C::loadBitmap()
 	}
 }
 
-ALLEGRO_EVENT_QUEUE * simulation_C::get_queue()
-{
-	return queue;
-}
-
-void simulation_C::start_timer()
-{
-	switch (tolower(YOU_GO[0]))
-	{
-	case HOMER:
-		if ((timer = al_create_timer(1 / FPS_HOMER)))
-			al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
-		break;
-	case MARIO:
-		if ((timer = al_create_timer(1 / FPS_MARIO)))
-			al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
-		break;
-	case SONIC:
-		if ((timer = al_create_timer(1 / FPS_SONIC)))
-			al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
-		break;
-	case CAT:
-		if ((timer = al_create_timer(1 / FPS_CAT))) 
-			al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
-		break;
-	case BOOM1:
-		if ((timer = al_create_timer(1 / FPS_BOOM1)))
-			al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
-		break;
-	case BOOM2:
-		if ((timer = al_create_timer(1 / FPS_BOOM2))) 
-			al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
-		break;
-	}
-	al_start_timer(timer);
-}
-
-bool simulation_C::draw_next()
-{
-	bool reach_end = false;
-
-	switch (tolower(YOU_GO[0]))
-	{
-	case HOMER:
-		(coordX > SCREEN_W) ? reach_end = true : coordX += VEL_HOMER;		//si llego al final le aviso
-		tick == 9 ? tick = 0 : tick++;
-		al_draw_bitmap(HomerBitmap[tick], coordX, coordY, 0);
-		break;
-	case MARIO:
-		(coordX > SCREEN_W) ? reach_end = true : coordX += VEL_MARIO;
-		tick == 11 ? tick = 0 : tick++;
-		al_draw_scaled_bitmap(MarioBitmap[tick], 0, 0, al_get_bitmap_width(MarioBitmap[tick]), al_get_bitmap_height(MarioBitmap[tick]), coordX, coordY, al_get_bitmap_width(MarioBitmap[tick]) / 2, al_get_bitmap_height(MarioBitmap[tick]) / 2, 0);
-		break;
-	case SONIC:
-		(coordX > SCREEN_W) ? reach_end = true : NULL;
-		(tick == 0 || tick == 4) ? coordX += VEL_SONIC : NULL;
-		tick == 9 ? tick = 0 : tick++;
-		al_draw_scaled_bitmap(SonicBitmap[tick], 0, 0, al_get_bitmap_width(SonicBitmap[tick]), al_get_bitmap_height(SonicBitmap[tick]), SCREEN_W - coordX, coordY, al_get_bitmap_width(SonicBitmap[tick]) / 2, al_get_bitmap_height(SonicBitmap[tick]) / 2, 0);
-		break;
-	case CAT:
-		(coordX > SCREEN_W) ? reach_end = true : coordX += VEL_CAT;
-		tick == 11 ? tick = 0 : tick++;
-		al_draw_scaled_bitmap(CatBitmap[tick], 0, 0, al_get_bitmap_width(CatBitmap[tick]), al_get_bitmap_height(CatBitmap[tick]), coordX, coordY, al_get_bitmap_width(CatBitmap[tick]) / 2, al_get_bitmap_height(CatBitmap[tick]) / 2, 0);
-		break;
-	case BOOM1:
-		tick == 6 ? reach_end = true : tick++;
-		al_draw_bitmap(Boom1Bitmap[tick], al_get_display_width(display) / 2 - al_get_bitmap_width(Boom1Bitmap[tick]) / 2, al_get_display_height(display) / 2 - al_get_bitmap_height(Boom1Bitmap[tick]) / 2, 0);
-		break;
-
-	case BOOM2:
-		tick == 46 ? reach_end = true : tick++;
-		al_draw_bitmap(Boom2Bitmap[tick], al_get_display_width(display) / 2 - al_get_bitmap_width(Boom2Bitmap[tick]) / 2, al_get_display_height(display) / 2 - al_get_bitmap_height(Boom2Bitmap[tick]) / 2, 0);
-		break;
-	}
-
-	return reach_end;
-}
-
-
 void simulation_C::destroy_all()
 {
 	al_destroy_display(display);	//destruyo todo
@@ -251,6 +121,48 @@ void simulation_C::destroy_all()
 	}
 }
 
+
+void simulation_C::create_all()
+{
+	if (al_init())	//inicializo allegro
+	{
+		if (al_install_audio())	//inicializo los audios
+		{
+			if (al_init_acodec_addon())
+			{
+				if ((al_reserve_samples(1)))	//para la musica
+				{
+					if (al_init_image_addon())	//addon para las imagenes
+					{
+						if (al_install_keyboard())	//inicializo para que lea teclado
+						{
+							if ((queue = al_create_event_queue()))	//creo la cola de eventos
+							{
+								if ((display = al_create_display(SCREEN_W, SCREEN_H)))	//creo el display
+								{
+									al_register_event_source(this->queue, al_get_keyboard_event_source());	//hago que la cola de eventos registre el teclado
+									al_register_event_source(this->queue, al_get_display_event_source(this->display));	//que registre cosas del display
+																														//al_register_event_source(this->queue, al_get_timer_event_source(this->timer));	//y del timer
+								}
+							}
+						}
+					}
+					else
+						fprintf(stderr, "ERROR: Failed to load Image addon\n");
+				}
+				else
+					fprintf(stderr, "ERROR: Failed to reserve sample\n");
+			}
+			else
+				fprintf(stderr, "ERROR: Failed to install acodec addon\n");
+		}
+		else
+			fprintf(stderr, "ERROR: Failed to install audio\n");
+	}
+	else
+		fprintf(stderr, "ERROR: Failed to initialize allegro system\n");
+}
+
 void simulation_C::setmode(mode modo)
 {
 	this->modo = modo;
@@ -263,23 +175,15 @@ mode simulation_C::getmode()
 
 void simulation_C::run()
 {
+	create_all();
+
+
+	coordX = 0;
+	tick = 0;
+	coordY = SCREEN_H / 3.0;
 	bool next = false;		//con esto indico si termine mi secuencia y le aviso al siguiente	
 	loadBitmap();
-	start_timer();
-
-	while (!next)
-	{
-		if (al_get_next_event(queue, &ev))	//tengo el evento registrado en ev
-		{
-			if (ev.type == ALLEGRO_EVENT_TIMER)		//si tengo un evento de timer...
-			{
-				next = update_display();	//cuando termine lo inico con el next
-				al_flip_display();
-			}
-			else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE || ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
-				next = true;
-		}
-	}
+	draw();
 	destroy_all();
 
 	(YOU_GO[1])++;		//incremento el count
@@ -402,7 +306,9 @@ bool simulation_C::MustsendMsg()
 	bool mustsendmsg = true;
 	int n = ((int)YOU_GO[1]);	//hago un casteo explicito del count
 	if (YOU_GO[n + 1] == '\0')		//me fijo si despues de mi no viene nadie (el string termina)
+	{
 		mustsendmsg = false;
+	}
 	return mustsendmsg;
 }
 
@@ -435,9 +341,9 @@ char * simulation_C::getmsg()
 	return YOU_GO;
 }
 
-void simulation_C::SetAskUser()
+void simulation_C::SetAskUser(bool answer)
 {
-	MustAskUse = true;
+	MustAskUse =answer;
 }
 
 void simulation_C::setIP(string ip)
@@ -458,11 +364,125 @@ void simulation_C::clearMsg()
 	}
 }
 
-bool simulation_C::Imlast()
+
+
+
+
+void simulation_C::draw()
 {
-	bool last = false;
-	int n = ((int)YOU_GO[1]);		//me fijo si soy el ultimo
-	if (YOU_GO[n + 1] == '\0')		
-		last = true;
-	return last;
+	bool finished = false;
+	switch (tolower(YOU_GO[0]))
+	{
+	
+		case HOMER:
+			while (coordX < SCREEN_W)
+			{
+				coordX += VEL_HOMER;
+				tick == 9 ? tick = 0 : tick++;
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_bitmap(HomerBitmap[tick], coordX, coordY, 0);
+				al_flip_display();
+				al_rest(FPS_HOMER);
+				
+			}
+			break;
+		case MARIO:
+			while (coordX < SCREEN_W)
+			{
+				coordX += VEL_MARIO;
+				tick == 11 ? tick = 0 : tick++;
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_scaled_bitmap(MarioBitmap[tick], 0, 0, al_get_bitmap_width(MarioBitmap[tick]), al_get_bitmap_height(MarioBitmap[tick]), coordX, coordY, al_get_bitmap_width(MarioBitmap[tick]) / 2, al_get_bitmap_height(MarioBitmap[tick]) / 2, 0);
+				al_flip_display();
+				al_rest(FPS_MARIO);
+
+			}
+			break;
+		case CAT:
+			while (coordX < SCREEN_W)
+			{
+				coordX += VEL_CAT;
+				tick == 11 ? tick = 0 : tick++;
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_scaled_bitmap(CatBitmap[tick], 0, 0, al_get_bitmap_width(CatBitmap[tick]), al_get_bitmap_height(CatBitmap[tick]), coordX, coordY, al_get_bitmap_width(CatBitmap[tick]) / 2, al_get_bitmap_height(CatBitmap[tick]) / 2, 0);
+				al_flip_display();
+				al_rest(FPS_CAT);
+
+			}
+			break;
+		case SONIC:
+			while (coordX < SCREEN_W)
+			{
+				(tick == 0 || tick == 4) ? coordX += VEL_SONIC : NULL;
+				tick == 9 ? tick = 0 : tick++;
+				al_clear_to_color(al_map_rgb(255, 255, 255));
+				al_draw_scaled_bitmap(SonicBitmap[tick], 0, 0, al_get_bitmap_width(SonicBitmap[tick]), al_get_bitmap_height(SonicBitmap[tick]), /*SCREEN_W -*/ coordX, coordY, al_get_bitmap_width(SonicBitmap[tick]) / 2, al_get_bitmap_height(SonicBitmap[tick]) / 2, ALLEGRO_FLIP_HORIZONTAL);
+				al_flip_display();
+				al_rest(FPS_SONIC);
+
+			}
+			break;
+		case BOOM1:
+			
+			while (!finished)
+			{
+				tick == 6 ? finished = true : tick++;
+				al_clear_to_color(al_map_rgb(0, 0, 0));
+				al_draw_bitmap(Boom1Bitmap[tick], al_get_display_width(display) / 2 - al_get_bitmap_width(Boom1Bitmap[tick]) / 2, al_get_display_height(display) / 2 - al_get_bitmap_height(Boom1Bitmap[tick]) / 2, 0);
+				al_flip_display();
+				al_rest(FPS_BOOM1);
+			}
+			break;
+		case BOOM2:
+			
+			while (!finished)
+			{
+				tick == 46 ? finished = true : tick++;
+				al_clear_to_color(al_map_rgb(0, 0, 0));
+				al_draw_bitmap(Boom2Bitmap[tick], al_get_display_width(display) / 2 - al_get_bitmap_width(Boom2Bitmap[tick]) / 2, al_get_display_height(display) / 2 - al_get_bitmap_height(Boom2Bitmap[tick]) / 2, 0);
+				al_flip_display();
+				al_rest( FPS_BOOM2);
+
+			}
+			break;
+		
+		
+	}
+}
+
+
+
+
+
+
+bool simulation_C::asktoStart()
+{
+	cout << "Do you want to send an animation?" << endl;
+	cout << "Press 'Y' then enter for yes or press 'N' then enter for no" << endl;
+	bool init = true;
+	char c;
+	bool keepOpen = false;
+	while (init)
+	{
+		while ((c = getchar()) != '\n')
+		{
+			if (tolower(c) == 'y')
+			{
+				init = false;
+				keepOpen = true;
+			}
+			else if (tolower(c))
+			{
+				init = false;
+				keepOpen = false;
+				cout << "Closing all" << endl;
+				cout << "See you in space cowboy" << endl;
+			}
+			else
+			{
+				cout << "Wrong input. Please press 'Y' for yes or 'N' for no." << endl;
+			}
+		}
+	}
+	return keepOpen;
 }
