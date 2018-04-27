@@ -24,6 +24,7 @@ void client_C::startConnection(string host, string port) {
 		boost::asio::ip::tcp::resolver::query(host, port));
 	cout << "Trying to connect to " << host << " on port " << port << std::endl;
 	boost::asio::connect(*socket_forClient, endpoint);
+	cout << "conected" << endl;
 	socket_forClient->non_blocking(true);
 }
 /*

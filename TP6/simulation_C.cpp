@@ -457,3 +457,12 @@ void simulation_C::clearMsg()
 		YOU_GO[i] = '\0';
 	}
 }
+
+bool simulation_C::Imlast()
+{
+	bool last = false;
+	int n = ((int)YOU_GO[1]);		//me fijo si soy el ultimo
+	if (YOU_GO[n + 1] == '\0')		
+		last = true;
+	return last;
+}
